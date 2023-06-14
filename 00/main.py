@@ -1,19 +1,20 @@
 import socket
 import threading
 
-#host = socket.gethostname()
-host = 'localhost'
+host = '0.0.0.0'
 port = 21234
 address = (host, port)
 
-def magic(conn):
+def magic(conn: socket.socket):
     with conn:
-        print(f"I am printing here, and you have connected {addr}")
-        all_data = []
-        data = conn.recv(1024)
-        all_data.append(data)
+        print(f"Connection with {addr} established")
+        while True: 
+            data = conn.recv(1024)
 
-        conn.sendall(b''.join(all_data))
+            if not data:
+                break
+
+            conn.sendall(data)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
